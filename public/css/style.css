@@ -130,3 +130,7 @@ body {
     width: 80%;
     margin-bottom: 10px;
   }
+
+ .container-fluid{
+    background-color: #f8f9fa;
+ } 

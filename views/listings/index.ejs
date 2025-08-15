@@ -1,126 +1,140 @@
 <% layout("/layouts/boilerplate") %>
-    <style>
-        #filters {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-        }
 
-        .filter {
-            text-align: center;
-            margin-right: 2rem;
-            margin-top: 2rem;
-            opacity: 0.7;
-        }
+<style>
+    /* === Filters === */
+    #filters {
+        display: flex;
+        align-items: center;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 1rem;
+        gap: 1rem;
+        border-bottom: 1px solid #ddd;
+    }
 
-        .filter:hover {
-            opacity: 1;
-            cursor: pointer;
-        }
+    .filter {
+        text-align: center;
+        opacity: 0.7;
+        min-width: 5rem;
+        flex-shrink: 0;
+    }
 
+    .filter:hover {
+        opacity: 1;
+        cursor: pointer;
+    }
+
+    .filter p {
+        font-size: 0.8rem;
+        margin-top: 0.3rem;
+    }
+
+    .tax-toggle {
+        border: 1px solid black;
+        border-radius: 1rem;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .tax-info {
+        display: none;
+        color: gray;
+        font-size: 0.9rem;
+    }
+
+    /* === Card Grid === */
+    .listing-card {
+        margin-bottom: 2rem;
+    }
+
+    .listing-card img {
+        width: 100%;
+        height: 18rem;
+        object-fit: cover;
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+    }
+
+    .listing-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    /* === Responsive Tweaks === */
+    @media (max-width: 768px) {
         .filter p {
+            font-size: 0.75rem;
+        }
+
+        .tax-toggle {
+            margin-left: auto;
+        }
+
+        .listing-card img {
+            height: 14rem;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .listing-card img {
+            height: 12rem;
+        }
+
+        .tax-toggle {
             font-size: 0.8rem;
+            padding: 0.3rem 0.8rem;
         }
+    }
+</style>
 
-        .tax-info{
-            display: none;
-        }
+<!-- Filters -->
+<div id="filters">
+    <div class="filter"><div><i class="fa-solid fa-fire"></i></div><p>Trending</p></div>
+    <div class="filter"><div><i class="fa-solid fa-bed"></i></div><p>Rooms</p></div>
+    <div class="filter"><div><i class="fa-solid fa-mountain-city"></i></div><p>Iconic Cities</p></div>
+    <div class="filter"><div><i class="fa-solid fa-mountain"></i></div><p>Mountains</p></div>
+    <div class="filter"><div><i class="fa-brands fa-fort-awesome"></i></div><p>Castles</p></div>
+    <div class="filter"><div><i class="fa-solid fa-person-swimming"></i></div><p>Amazing Pools</p></div>
+    <div class="filter"><div><i class="fa-solid fa-campground"></i></div><p>Camping</p></div>
+    <div class="filter"><div><i class="fa-solid fa-ship"></i></div><p>Boats</p></div>
 
-        .tax-toggle{
-            border: 1px solid black;
-            border-radius: 1rem;
-            height: 3.2rem;
-            padding: 1rem;
-            margin-left: 2rem;
-            display: flex;
-            align-items: center;
-        }
-    </style>
-    <div id="filters">
-        <div class="filter">
-            <div><i class="fa-solid fa-fire"></i></div>
-            <p>Trending</p>
-        </div>
-
-        <div class="filter">
-            <div><i class="fa-solid fa-bed"></i></div>
-            <p>Rooms</p>
-        </div>
-
-        <div class="filter">
-            <div><i class="fa-solid fa-mountain-city"></i></div>
-            <p>Iconic Cities</p>
-        </div>
-
-        <div class="filter">
-            <div><i class="fa-solid fa-mountain"></i></div>
-            <p>Mountains</p>
-        </div>
-
-        <div class="filter">
-            <div><i class="fa-brands fa-fort-awesome"></i></div>
-            <p>Castles</p>
-        </div>
-
-         <div class="filter">
-            <div><i class="fa-solid fa-person-swimming"></i></div>
-            <p>Amazing Pools</p>
-        </div>
-
-        <div class="filter">
-            <div><i class="fa-solid fa-campground"></i></div>
-            <p>Camping</p>
-        </div>
-
-        <div class="filter">
-            <div><i class="fa-brands fa-fort-awesome"></i></div>
-            <p>Castles</p>
-        </div>
-
-        <div class="filter">
-            <div><i class="fa-solid fa-ship"></i></div>
-            <p>Boats</p>
-        </div>
-
-        <div class="tax-toggle">
-            <div class="form-check-reverse form-switch">
-                <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
-                <label class="form-check-label" for="switchCheckDefault">Display total after taxes</label>
-            </div>
+    <div class="tax-toggle">
+        <div class="form-check-reverse form-switch">
+            <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+            <label class="form-check-label ms-2" for="switchCheckDefault">Total after taxes</label>
         </div>
     </div>
-    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
-        <% for(let listing of allListings){ %>
+</div>
+
+<!-- Listings -->
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 mt-3">
+    <% for (let listing of allListings) { %>
+        <div class="col">
             <a href="/listings/<%= listing._id %>" class="listing-link">
-                <div class="card col listing-card">
-                    <img src="<%= listing.image.url %>" class="card-img-top" alt="listing_image" style="height: 20rem;">
-                    <div class="card-img-overlay"></div>
+                <div class="card listing-card shadow-sm">
+                    <img src="<%= listing.image.url %>" class="card-img-top" alt="listing image">
                     <div class="card-body">
                         <p class="card-text">
-                            <b>
-                                <%= listing.title %> <br>
-                            </b>
-                            Price : &#8377;<%= listing.price.toLocaleString("en-IN") %>/night
+                            <b><%= listing.title %></b><br>
+                            Price: ₹<%= listing.price.toLocaleString("en-IN") %>/night
                             <i class="tax-info"> &nbsp;&nbsp;+18% GST</i>
                         </p>
                     </div>
                 </div>
             </a>
-            <% } %>
-    </div>
+        </div>
+    <% } %>
+</div>
 
-    <script>
-        let taxSwitch = document.getElementById("switchCheckDefault");
-        taxSwitch.addEventListener("click" , () =>{
-            let taxInfo = document.getElementsByClassName("tax-info");
-            console.log(taxInfo);
-            for(info of taxInfo){
-                if(info.style.display != "inline"){
-                    info.style.display = "inline";
-                }else{
-                    info.style.display = "none";
-                }
-                
-            }
-        })
-    </script>
+<script>
+    const taxSwitch = document.getElementById("switchCheckDefault");
+    taxSwitch.addEventListener("click", () => {
+        const taxInfoElements = document.getElementsByClassName("tax-info");
+        for (let info of taxInfoElements) {
+            info.style.display = (info.style.display === "inline") ? "none" : "inline";
+        }
+    });
+</script>
