@@ -1,12 +1,12 @@
 <% layout("/layouts/boilerplate") %>
-    <script>
-        const mapToken = "<%= process.env.MAPTILER_API_KEY%>";
-        const coordinates = <% - JSON.stringify(listing.geometry.coordinates) %>;
-        const listingData = {
-            location: "<%= listing.location %>",
-            title: "<%= listing.title %>"
-        };
-    </script>
+   <script>
+    window.mapToken = "<%= process.env.MAPTILER_API_KEY %>";
+    window.coordinates = <%- JSON.stringify(listing.geometry.coordinates) %>;
+    window.listingData = {
+        location: "<%= listing.location %>",
+        title: "<%= listing.title %>"
+    };
+</script>
     <div class="row mt-4">
         <div class="col-8 offset-3">
 
@@ -113,7 +113,7 @@
                                     <%}%>
                             </div>
                             <%}%>
-                                <hr>
+                                
 
             </div>
             <div class="col-8 offset-3 mb-3">
